@@ -1,13 +1,38 @@
-def merge(arr1:list,arr2:list)->list:
-    for i in arr2:
-        arr1.append(i)
-    return arr1
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
 
-def merge_sort(arr : list,left:int,right:int)-> list:
-    if left<right:
-        mid=(left+right)//2
-        return merge(merge_sort(arr,left,mid),merge_sort(arr,mid+1,right))
-    return arr
+    # Разбиваем массив на две части
+    mid = len(arr) // 2
+    left = arr[:mid]
+    right = arr[mid:]
+
+    # Рекурсивно сортируем каждую половину
+    left = merge_sort(left)
+    right = merge_sort(right)
+
+    # Объединяем отсортированные половины
+    return merge(left, right)
+
+
+def merge(left, right):
+    result = []
+    i = j = 0
+
+    # Сравниваем элементы левой и правой половин
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    # Добавляем оставшиеся элементы из левой и правой половин
+    result += left[i:]
+    result += right[j:]
+
+    return result
 
 arr=[int(i) for i in input().split()]
-print(merge_sort(arr,0,len(arr)-1))
+print(*merge_sort(arr))
